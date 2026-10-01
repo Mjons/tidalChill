@@ -2,6 +2,20 @@
 
 Pixel-art beach sim as an Android live wallpaper, with a home-screen widget that summons events (storm, hurricane, tsunami, volcano, nuke, aliens, meteor, black hole, beach party, glitch).
 
+## Android app (recommended)
+
+Scrolls with your home screen, has its own event widgets, works offline.
+
+1. On the phone, download: https://github.com/Mjons/tidalChill/releases/latest/download/TidalChill.apk
+2. Open it, allow "install unknown apps" for your browser when asked.
+3. Open Tidal Chill → **Set as wallpaper** → Home screen (or Home + lock).
+4. Long-press home screen → Widgets → Tidal Chill → *Tidal events* (4x3 pad) or *Tidal surprise* (1x1).
+5. Double-tap the wallpaper for a surprise event.
+
+Scrolling needs a launcher that sends wallpaper scroll info (Nova, Lawnchair, most stock launchers; Samsung may need its wallpaper-scrolling setting or Nova). Every push to `main` builds a new APK into Releases; install over the old one to update.
+
+## Web version (Lively etc.)
+
 ## How it works
 
 - `index.html` is the sim. With `?wall` it hides the UI, scales for portrait and turns on chaos mode.
