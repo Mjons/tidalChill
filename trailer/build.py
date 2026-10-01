@@ -23,7 +23,7 @@ css = """<script src="https://cdn.jsdelivr.net/npm/mp4-muxer@5.2.2/build/mp4-mux
 </style>"""
 ui = """<div id="tr"><canvas id="out"></canvas>
 <div id="tbar"><button id="play">&#9654; Preview</button><button id="stop">&#9632; Stop</button>
-<select id="fps"><option value="30" selected>30 fps</option><option value="60">60 fps</option></select>
+<label style="font:12px Silkscreen,monospace;display:flex;gap:6px;align-items:center"><input type="checkbox" id="mus" checked>MUSIC</label><select id="fps"><option value="30" selected>30 fps</option><option value="60">60 fps</option></select>
 <button id="exp">Export MP4</button><a id="save" hidden>Save again</a></div>
 <div id="pw"><div id="bar"></div></div><div id="st">Loading...</div></div>"""
 audio = ''
@@ -33,10 +33,11 @@ for name, mime in (('mix.ogg', 'audio/ogg'), ('mix.webm', 'audio/webm'), ('mix.m
         audio = '<script>window.TRAILER_AUDIO={mime:"%s",data:"%s"};</script>' % (mime, base64.b64encode(open(p, 'rb').read()).decode())
         break
 director = open(os.path.join(here, 'director.js'), encoding='utf-8').read()
+musicjs = open(os.path.join(here, 'music.js'), encoding='utf-8').read()
 uijs = open(os.path.join(here, 'ui.js'), encoding='utf-8').read()
 
 s = re.sub(r'<title>.*?</title>', '<title>Tidal Chill Trailer</title>', s, 1)
 s = s.replace('<meta charset="utf-8">', '<meta charset="utf-8">' + pre + css, 1)
-s = s + ui + audio + '<script>' + director + '</script><script>' + uijs + '</script>'
+s = s + ui + audio + '<script>' + director + '</script><script>' + musicjs + '</script><script>' + uijs + '</script>'
 open(os.path.join(root, 'trailer.html'), 'w', encoding='utf-8').write(s)
 print('trailer.html', len(s) // 1024, 'KB', '(with audio)' if audio else '(no audio)')

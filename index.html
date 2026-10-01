@@ -1628,6 +1628,6 @@ window.TL={cvs,step(dt){update(dt);render();},sim(dt){update(dt);},draw(){render
   get phase(){return phase},set phase(v){phase=v},get W(){return W},get H(){return H},get S(){return S},get pan(){return PAN},get off(){return wOff},set off(v){wOff=clamp(v,0,1);applyPan();},
   get time(){return time},set time(v){time=v},
   zap:(near)=>{const x=W*rand(0.32,0.68),y0=hy*rand(0.08,0.25),x1=x+rand(-12,12)*KS,y1=near?Math.round(hy+(shoreY-hy)*rand(0.15,0.4)):hy;strike(x,y0,x1,y1,!!near,false);cfl.push({x,y:y0,t:0,str:[0],r:(22*KS)**2,k:0.45});if(near)splash(x1,y1,14,1.4);},
-  peek:()=>({bolts:bolts.length,flash:flashV,evFlash,shake,cfl:cfl.length}),get evs(){return EVS},get nk(){return NK},set spd(v){spIdx=v},resize:()=>resize()};
+  peek:()=>({bolts:bolts.length,flash:flashV,evFlash,shake,cfl:cfl.length}),get isl(){return island?island.x0+island.w/2:W/2},get evs(){return EVS},get nk(){return NK},set spd(v){spIdx=v},resize:()=>resize()};
 })();
 </script>

@@ -18,18 +18,18 @@ const C={
   vo:[{t:0.12,d:1.75,txt:'YOUR WALLPAPER\nIS BORING.'},{t:2.05,d:1.85,txt:"MINE'S A\nWHOLE BEACH."},{t:4.0,d:0.95,txt:'WATCH THIS.'}],
   endTitle:17.62, endLine:18.35
 };
-// montage segments: ev, length (s), fast-forward into the event (s), time of day, wallpaper offset, playback speed
+// montage segments sit on a 120 BPM grid (0.5 s beats) so cuts land on the music: ev, length (s), fast-forward into the event (s), time of day, wallpaper offset, playback speed
 const SEG=[
- {ev:'storm',    len:1.1, ff:21,  ph:0.56, off:0.5,  sp:1.0, zap:[0.1,0.55], name:'STORM',     col:'#9fb4ff'},
- {ev:'hurricane',len:1.1, ff:59,  ph:0.52, off:0.5,  sp:2.5,                 name:'HURRICANE', col:'#8fe3c8'},
- {ev:'tsunami',  len:1.3, ff:30.2,ph:0.47, off:0.5,  sp:1.6,                 name:'TSUNAMI',   col:'#5fd0ff'},
- {ev:'volcano',  len:1.2, ff:33,  ph:0.71, off:0.5,  sp:1.5,                 name:'VOLCANO',   col:'#ff8a3d'},
- {ev:'meteor',   len:1.3, ff:14.5,ph:0.42, off:0.5,  sp:1.0,                 name:'METEOR',    col:'#ffd166'},
- {ev:'alien',    len:1.2, ff:43.6,ph:0.60, off:0.5,  sp:1.0,                 name:'ALIENS',    col:'#c58bff'},
- {ev:'nuke',     len:1.2, ff:0.25,ph:0.50, off:0.05, sp:1.2,                 name:'NUKE',      col:'#ffb347'},
- {ev:'party',    len:1.1, ff:128, ph:0.80, off:0.5,  sp:1.0,                 name:'BEACH PARTY',col:'#ff6ad5'},
- {ev:'glitch',   len:1.1, ff:52.6,ph:0.50, off:0.5,  sp:1.0,                 name:'GLITCH',    col:'#66ffd9'},
- {ev:'blackhole',len:1.9, ff:77,  ph:0.50, off:0.5,  sp:3.6,                 name:'BLACK HOLE',col:'#ff9a5a', sub:'oh no.'}
+ {ev:'storm',    len:1.0, ff:21,  ph:0.56, off:0.5,  sp:1.0, zap:[0.1,0.55], name:'STORM',     col:'#9fb4ff'},
+ {ev:'hurricane',len:1.0, ff:59,  ph:0.52, off:0.5,  sp:2.5,                 name:'HURRICANE', col:'#8fe3c8'},
+ {ev:'tsunami',  len:1.5, ff:30.2,ph:0.47, off:0.5,  sp:1.6,                 name:'TSUNAMI',   col:'#5fd0ff'},
+ {ev:'volcano',  len:1.0, ff:33,  ph:0.71, off:'isl',  sp:1.5,                 name:'VOLCANO',   col:'#ff8a3d'},
+ {ev:'meteor',   len:1.5, ff:14.5,ph:0.42, off:0.5,  sp:1.0,                 name:'METEOR',    col:'#ffd166'},
+ {ev:'alien',    len:1.0, ff:43.6,ph:0.60, off:0.5,  sp:1.0,                 name:'ALIENS',    col:'#c58bff'},
+ {ev:'nuke',     len:1.5, ff:0.25,ph:0.50, off:'nk', sp:1.2,                 name:'NUKE',      col:'#ffb347'},
+ {ev:'party',    len:1.0, ff:128, ph:0.80, off:0.5,  sp:1.0,                 name:'BEACH PARTY',col:'#ff6ad5'},
+ {ev:'glitch',   len:1.0, ff:52.6,ph:0.50, off:0.5,  sp:1.0,                 name:'GLITCH',    col:'#66ffd9'},
+ {ev:'blackhole',len:2.0, ff:77,  ph:0.50, off:0.5,  sp:3.6,                 name:'BLACK HOLE',col:'#ff9a5a', sub:'oh no.'}
 ];
 let acc=C.montage;for(const s of SEG){s.t0=acc;acc+=s.len;s.t1=acc;s.cell=CELLS.findIndex(c=>c[0]===s.ev);}
 
@@ -46,7 +46,7 @@ let fps=30,seg=-1,ended=false,booted=false,avg=[40,60,110],cueFired=new Set();
 const tiny=document.createElement('canvas');tiny.width=tiny.height=1;const TX=tiny.getContext('2d',{willReadFrequently:true});
 
 function boot(){window.TLseed(20261001);TL.time=0;TL.spd=0;TL.newSea();TL.phase=0.70;TL.off=0;for(let k=0;k<45;k++)TL.sim(1/30);seg=-1;ended=false;booted=true;cueFired.clear();}
-function setupSeg(s){TL.newSea();TL.ev(s.ev);const n=Math.round(s.ff*30);for(let k=0;k<n;k++)TL.sim(1/30);TL.phase=s.ph;TL.off=s.off;}
+function setupSeg(s){TL.newSea();TL.ev(s.ev);const n=Math.round(s.ff*30);for(let k=0;k<n;k++)TL.sim(1/30);TL.phase=s.ph;const cx=s.off==='isl'?TL.isl:s.off==='nk'&&TL.nk?TL.nk.gx:null;TL.off=cx!=null?clamp((cx-WV/2)/(TL.W-WV),0,1):s.off;}
 function pageAt(t){let p=0;for(const [a,b,f,to] of C.swipes){if(t>=b)p=to;else if(t>a){p=lerp(f,to,ease((t-a)/(b-a)));break;}}return p;}
 
 /* advance the sim to time t (frame i) */
