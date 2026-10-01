@@ -1,0 +1,36 @@
+plugins { id 'com.android.application' }
+
+def run = (System.getenv('GITHUB_RUN_NUMBER') ?: '1') as int
+
+android {
+  namespace 'app.tidalchill'
+  compileSdk 34
+  defaultConfig {
+    applicationId 'app.tidalchill'
+    minSdk 26
+    targetSdk 34
+    versionCode run
+    versionName "1.0.${run}"
+  }
+  signingConfigs {
+    // hobby key committed on purpose so every CI build can update the last one in place
+    tide {
+      storeFile rootProject.file('tidal.jks')
+      storePassword 'tidalchill'
+      keyAlias 'tidal'
+      keyPassword 'tidalchill'
+    }
+  }
+  buildTypes {
+    release { minifyEnabled false; signingConfig signingConfigs.tide }
+    debug { signingConfig signingConfigs.tide }
+  }
+  sourceSets { main { assets.srcDirs += "$buildDir/generated/tideassets" } }
+}
+
+// bundle the sim so the wallpaper works offline and without Pages
+tasks.register('copyTide', Copy) {
+  from("${rootDir}/../index.html")
+  into("$buildDir/generated/tideassets")
+}
+preBuild.dependsOn copyTide

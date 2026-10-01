@@ -88,6 +88,8 @@ body.wall.notoast #toast{display:none}
 (()=>{
 const cvs=document.getElementById('c'), ctx=cvs.getContext('2d',{alpha:false});
 const UQ=new URLSearchParams(location.search),WALL=UQ.has('wall'),TOPIC=UQ.get('topic'),CHMIN=Math.max(1,+UQ.get('chaos')||6),FPSI=WALL?1000/Math.min(60,Math.max(10,+UQ.get('fps')||30))-2:0;if(WALL)document.body.classList.add('wall');
+const PAN=WALL?(UQ.has('pan')?Math.min(2,Math.max(0,+UQ.get('pan')||0)):0.5):0,PAGES=Math.max(2,+UQ.get('pages')||3);let wOff=0.5,wNat=false,wVW=0,tlHidden=false;
+let shXf=false;function applyPan(sx=0,sy=0){shXf=!!(sx||sy);const px=PAN?-Math.round(wOff*Math.max(0,W*S-wVW)):0;const v=(px+sx||sy)?'translate3d('+(px+sx)+'px,'+sy+'px,0)':'';if(cvs.style.transform!==v)cvs.style.transform=v;}
 const rand=(a,b)=>a+Math.random()*(b-a), randi=(a,b)=>Math.floor(rand(a,b+1));
 const clamp=(v,a,b)=>v<a?a:v>b?b:v;
 const sstep=(a,b,x)=>{let t=(x-a)/(b-a);t=t<0?0:t>1?1:t;return t*t*(3-2*t);};
@@ -169,12 +171,13 @@ function resize(){
   S=Math.max(2,Math.round(vh/178),Math.ceil(vw/720));if(vh>vw*1.25)S=Math.max(2,Math.round(vw/(+UQ.get('px')||140)));
   W=Math.ceil(vw/S);H=Math.ceil(vh/S);
   if(H<110){S=Math.max(1,Math.floor(vh/110));W=Math.ceil(vw/S);H=Math.ceil(vh/S);}
+  wVW=vw;if(PAN)W=Math.ceil(W*(1+PAN));
   cvs.width=W;cvs.height=H;cvs.style.width=W*S+'px';cvs.style.height=H*S+'px';
   KS=H/180;hy=Math.round(H*0.47);shoreY=Math.round(H*0.74);sandH=H-shoreY;
   img=ctx.createImageData(W,H);buf=new Uint32Array(img.data.buffer);
   foam=new Float32Array(W*H);wet=new Float32Array(W*sandH);cmask=new Uint8Array(W*hy);
   swP=new Float32Array(W);swV=new Float32Array(W);swF=new Float32Array(W);swT=new Float32Array(W);rest=new Float32Array(W);back=new Float32Array(W);
-  buildScene();waves=[];parts=[];birds=[];prewarm();
+  buildScene();waves=[];parts=[];birds=[];prewarm();applyPan();
 }
 
 function buildScene(){
@@ -329,7 +332,7 @@ function nukeUpdate(dt){if(shake>0)shake=Math.max(0,shake-dt*1.6);
     for(const b of grass)b.lean*=Math.exp(-dt*0.35);
     if(t>n.life){NK=null;gulls=[];lifeRestore();evUI();const ng=randi(1,2);for(let i=0;i<ng;i++)gulls.push(newGull(rand(0.1,0.9)*W,shoreY+rand(0.4,0.8)*sandH));}}
   for(let i=ash.length-1;i>=0;i--){const a=ash[i];a.x+=(a.vx+Math.sin(time*1.3+a.ph)*2*KS)*dt;a.y+=a.vy*dt;if(a.y>H)ash.splice(i,1);}
-  cvs.style.transform=shake>0.01?`translate(${Math.round((Math.random()-0.5)*shake*10)}px,${Math.round((Math.random()-0.5)*shake*7)}px)`:'';}
+  if(shake>0.01)applyPan(Math.round((Math.random()-0.5)*shake*10),Math.round((Math.random()-0.5)*shake*7));else if(shXf){applyPan();}}
 // fireball colour by temperature 0..1
 function heat(k){return k>0.75?[255,250,225]:k>0.5?[255,220,140]:k>0.3?[255,150,60]:k>0.15?[210,80,35]:[120,45,30];}
 function blobPx(x,y,r,c0,c1,c2,glow,s,edge){const R=Math.ceil(r);const L=P.light,lk=0.55*lvisSun;const ldx=Math.sign(lx-x)||1;
@@ -1598,15 +1601,26 @@ newTex();resize();lastVW=innerWidth;lastVH=innerHeight;drawTimeline();setSpeed(0
 const EVLIST=['storm','hurricane','tsunami','volcano','nuke','alien','meteor','blackhole','party','glitch'];
 const EVALIAS={aliens:'alien',ufo:'alien','black hole':'blackhole',black_hole:'blackhole',bh:'blackhole',thunderstorm:'storm',beach:'party',beachparty:'party',beach_party:'party',sim:'glitch',simulation:'glitch',meteorite:'meteor',asteroid:'meteor',bomb:'nuke'};
 function surprise(){const o=EVLIST.filter(evCan);if(o.length)evStart(o[randi(0,o.length-1)]);}
-function remoteCmd(c){c=(c||'').trim().toLowerCase();c=EVALIAS[c]||c;wake();
+let tlPend=null;
+function remoteCmd(c){if(tlHidden){tlPend=c;return;}c=(c||'').trim().toLowerCase();c=EVALIAS[c]||c;wake();
   if(EVLIST.includes(c))evStart(c);else if(c==='random'||c==='surprise')surprise();else if(c==='calm')evCalm();else if(c==='newsea'||c==='new sea'||c==='reset')newSea();
   else if(c==='chaos')setChaos(!chaos);else if(c==='chaos on')setChaos(true);else if(c==='chaos off')setChaos(false);}
 if(TOPIC){const seen=new Set();const go=()=>{let es;try{es=new EventSource('https://ntfy.sh/'+encodeURIComponent(TOPIC)+'/sse');}catch(e){return;}
   es.addEventListener('message',e=>{try{const m=JSON.parse(e.data);if(m.event&&m.event!=='message')return;if(m.id){if(seen.has(m.id))return;seen.add(m.id);}if(m.time&&Date.now()/1000-m.time>120)return;remoteCmd(m.message);}catch(_){}});};go();}
 if(WALL){if(UQ.get('toasts')==='0')document.body.classList.add('notoast');if(UQ.get('chaos')!=='0'){chaos=true;chaosT=rand(0.3,0.8)*CHMIN*60;}
-  let lt=0,lx=0,ly=0;addEventListener('pointerdown',e=>{const now=performance.now();if(now-lt<380&&Math.hypot(e.clientX-lx,e.clientY-ly)<50){surprise();lt=0;}else{lt=now;lx=e.clientX;ly=e.clientY;}},{passive:true});}
+  let lt=0,lx=0,ly=0;addEventListener('pointerdown',e=>{const now=performance.now();if(now-lt<380&&Math.hypot(e.clientX-lx,e.clientY-ly)<50){surprise();lt=0;}else{lt=now;lx=e.clientX;ly=e.clientY;}},{passive:true});
+  // native wallpaper bridge: launcher page offset (0..1), visibility, surprise
+  window.wallOffset=x=>{wNat=true;wOff=clamp(+x||0,0,1);applyPan();};
+  window.tlVis=v=>{tlHidden=!v;if(v&&tlPend){const c=tlPend;tlPend=null;remoteCmd(c);}};
+  window.tlSurprise=()=>surprise();
+  window.tlCmd=c=>remoteCmd(c);
+  // fallback when the host app forwards touches but not offsets: follow horizontal swipes
+  if(PAN){let dn=null;addEventListener('pointerdown',e=>{if(!wNat)dn={x:e.clientX,o:wOff};},{passive:true});
+    addEventListener('pointermove',e=>{if(dn&&!wNat){wOff=clamp(dn.o-(e.clientX-dn.x)/(wVW*(PAGES-1)),0,1);applyPan();}},{passive:true});
+    for(const t of ['pointerup','pointercancel'])addEventListener(t,()=>{dn=null;},{passive:true});}
+  if(UQ.has('off'))wOff=clamp(+UQ.get('off')||0,0,1);applyPan();}
 let last=performance.now();
-function frame(now){requestAnimationFrame(frame);if(FPSI&&now-last<FPSI)return;let dt=(now-last)/1000;last=now;if(!(dt>0))dt=0;if(dt>0.05)dt=0.05;
+function frame(now){requestAnimationFrame(frame);if(tlHidden){last=now;return;}if(FPSI&&now-last<FPSI)return;let dt=(now-last)/1000;last=now;if(!(dt>0))dt=0;if(dt>0.05)dt=0.05;
   try{if(!paused)update(dt);render();hudTick();audioTick();}catch(e){if(!frame.err){frame.err=1;console.error(e);}}}
 requestAnimationFrame(frame);
 })();
