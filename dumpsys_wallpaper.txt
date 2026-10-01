@@ -1,0 +1,40 @@
+mDefaultWallpaperComponent=null
+mImageWallpaper=ComponentInfo{com.android.systemui/com.android.systemui.wallpapers.ImageWallpaper}
+System wallpaper state:
+ User 0: id=2: mWhich=3: mSystemWasBoth=false
+ Display state:
+  displayId=0
+  mWidth=1280  mHeight=640
+  mPadding=Rect(0, 0 - 0, 0)
+  mCropHint=Rect(0, 0 - 0, 0)
+  mName=
+  mAllowBackup=true
+  mWallpaperComponent=ComponentInfo{app.tidalchill/app.tidalchill.TideWallpaper}
+  mWallpaperDimAmount=0.0
+  isColorExtracted=false
+  mUidToDimAmount:
+  Wallpaper connection com.android.server.wallpaper.WallpaperManagerService$WallpaperConnection@2bc794a:
+    mInfo.component=ComponentInfo{app.tidalchill/app.tidalchill.TideWallpaper}
+     mDisplayId=0
+     mToken=android.os.Binder@87a4131
+     mEngine=android.service.wallpaper.IWallpaperEngine$Stub$Proxy@f7ce2c9
+    mService=android.service.wallpaper.IWallpaperService$Stub$Proxy@5bbfdce
+    mLastDiedTime=-138988
+Lock wallpaper state:
+Fallback wallpaper state:
+ User 0: id=1: mWhich=1: mSystemWasBoth=false
+ Display state:
+  displayId=0
+  mWidth=1280  mHeight=640
+  mPadding=Rect(0, 0 - 0, 0)
+  mCropHint=Rect(0, 0 - 0, 0)
+  mName=
+  mAllowBackup=false
+  mWallpaperComponent=ComponentInfo{com.android.systemui/com.android.systemui.wallpapers.ImageWallpaper}
+  mWallpaperDimAmount=0.0
+  isColorExtracted=false
+  mUidToDimAmount:
+  Wallpaper connection com.android.server.wallpaper.WallpaperManagerService$WallpaperConnection@8067216:
+    mService=android.service.wallpaper.IWallpaperService$Stub$Proxy@3b404ef
+    mLastDiedTime=-138988
+mIsLockscreenLiveWallpaperEnabled=false
