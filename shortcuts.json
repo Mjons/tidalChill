@@ -1,0 +1,194 @@
+{
+  "version": 92,
+  "compatibilityVersion": 90,
+  "categories": [
+    {
+      "id": "f217d64f-ce4c-4bf7-aa40-0d279f6aa48b",
+      "name": "Tidal Chill",
+      "layoutType": "medium_grid",
+      "background": "default",
+      "shortcuts": [
+        {
+          "id": "08019751-5f8f-44d4-8767-4a0bad3fa404",
+          "name": "Beach event",
+          "description": "Pick an event for the wallpaper",
+          "iconName": "flat_color_umbrella",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message={{10ed8a1b-2939-451f-8ee4-88e5d9a02943}}",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        },
+        {
+          "id": "5681d3bc-2a3e-457d-b271-e8958f3c17b4",
+          "name": "Surprise me",
+          "iconName": "flat_color_star",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message=random",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        },
+        {
+          "id": "6351eff5-73ae-4c83-abfb-97689e2d4544",
+          "name": "Calm",
+          "iconName": "flat_color_cloud",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message=calm",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        },
+        {
+          "id": "544f4eb6-e1c7-441c-b092-ce6e9044c306",
+          "name": "Storm",
+          "iconName": "flat_color_bolt",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message=storm",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        },
+        {
+          "id": "9ef12d51-3cf9-4381-8a2e-e39da683a816",
+          "name": "Hurricane",
+          "iconName": "flat_color_cloud",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message=hurricane",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        },
+        {
+          "id": "22cea4a1-23ca-4f46-888b-5f6e3918f68e",
+          "name": "Tsunami",
+          "iconName": "flat_color_umbrella",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message=tsunami",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        },
+        {
+          "id": "61411163-9d0f-4ba5-a9a8-2fe09262a9e3",
+          "name": "Volcano",
+          "iconName": "flat_color_star",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message=volcano",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        },
+        {
+          "id": "27bc79c8-9eaa-4393-83a8-f06e9a765701",
+          "name": "Nuke",
+          "iconName": "flat_color_lightbulb_3",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message=nuke",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        },
+        {
+          "id": "aeec6b4f-4e15-4e2a-a8cb-d571d2a54bfc",
+          "name": "Aliens",
+          "iconName": "flat_color_ufo",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message=alien",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        },
+        {
+          "id": "e2932c15-4d9b-4b7b-9021-e3fe7ace1a2e",
+          "name": "Meteor",
+          "iconName": "flat_color_rocket",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message=meteor",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        },
+        {
+          "id": "20d8c07e-75db-4543-ae45-45b64b484b5d",
+          "name": "Black hole",
+          "iconName": "flat_color_star",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message=blackhole",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        },
+        {
+          "id": "1aa3b352-6a71-4d62-986b-c225079d2e42",
+          "name": "Beach party",
+          "iconName": "flat_color_umbrella",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message=party",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        },
+        {
+          "id": "5573f866-68a2-4bd2-9976-7c39db824321",
+          "name": "Glitch",
+          "iconName": "flat_color_lightbulb_5",
+          "method": "GET",
+          "url": "https://ntfy.sh/tidalchill-3e26af51d72a/publish?message=glitch",
+          "responseHandling": {
+            "uiType": "toast",
+            "successOutput": "none",
+            "failureOutput": "simple"
+          },
+          "launcherShortcut": true
+        }
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "id": "10ed8a1b-2939-451f-8ee4-88e5d9a02943",
+      "key": "tidal_event",
+      "type": "select",
+      "title": "Summon an event",
+      "urlEncode": true,
+      "data": "{\"labels\":[\"Storm\",\"Hurricane\",\"Tsunami\",\"Volcano\",\"Nuke\",\"Aliens\",\"Meteor\",\"Black hole\",\"Beach party\",\"Glitch\",\"Surprise me\",\"Calm everything\",\"New sea\"],\"values\":[\"storm\",\"hurricane\",\"tsunami\",\"volcano\",\"nuke\",\"alien\",\"meteor\",\"blackhole\",\"party\",\"glitch\",\"random\",\"calm\",\"newsea\"],\"multi_select\":\"false\",\"separator\":\",\"}"
+    }
+  ]
+}

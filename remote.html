@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Tidal Remote</title>
+<meta name="theme-color" content="#0b1424">
+<style>
+:root{--bg:#0b1424;--panel:#13213a;--line:#2a3f63;--ink:#e8eefc;--dim:#8aa0c8;--acc:#ffb347}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 ui-monospace,Menlo,Consolas,monospace}
+body{min-height:100vh;padding:max(16px,env(safe-area-inset-top)) 16px 24px;image-rendering:pixelated}
+h1{font-size:18px;letter-spacing:2px;margin:4px 0 2px;text-transform:uppercase}
+.sub{color:var(--dim);font-size:12px;margin-bottom:16px;word-break:break-all}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+button{font:inherit;color:var(--ink);background:var(--panel);border:2px solid var(--line);padding:16px 8px;cursor:pointer;
+  box-shadow:inset -3px -3px 0 rgba(0,0,0,.35),inset 3px 3px 0 rgba(255,255,255,.06);text-transform:uppercase;letter-spacing:1px}
+button:active{transform:translate(1px,1px);box-shadow:inset 3px 3px 0 rgba(0,0,0,.35)}
+button .i{display:block;font-size:22px;margin-bottom:6px}
+button.wide{grid-column:1/-1;border-color:var(--acc);color:var(--acc)}
+button.ok{border-color:#5fd38d}button.bad{border-color:#ff5c5c}
+.row{display:flex;gap:10px;margin-top:10px}.row button{flex:1;padding:12px 6px}
+details{margin-top:22px;color:var(--dim)}summary{cursor:pointer}
+input{font:inherit;width:100%;margin-top:8px;padding:10px;background:var(--panel);color:var(--ink);border:2px solid var(--line)}
+#st{min-height:20px;margin-top:14px;color:var(--dim);font-size:12px}
+</style></head><body>
+<h1>Tidal Remote</h1>
+<div class="sub">topic: <span id="tp"></span></div>
+<div class="grid" id="g"></div>
+<div class="row">
+  <button data-c="chaos on">Chaos on</button>
+  <button data-c="chaos off">Chaos off</button>
+  <button data-c="newsea">New sea</button>
+</div>
+<div id="st"></div>
+<details><summary>Change topic</summary>
+<input id="ti" autocomplete="off" spellcheck="false">
+</details>
+<script>
+const DEF='tidalchill-3e26af51d72a';
+const q=new URLSearchParams(location.search);
+let topic=q.get('topic');
+try{topic=topic||localStorage.getItem('tl_topic')}catch(e){}
+topic=topic||DEF;
+const EV=[['surprise','?','Surprise me',1],['storm','⛈','Storm'],['hurricane','🌀','Hurricane'],['tsunami','🌊','Tsunami'],
+['volcano','🌋','Volcano'],['nuke','☢','Nuke'],['alien','🛸','Aliens'],['meteor','☄','Meteor'],
+['blackhole','⚫','Black hole'],['party','🎉','Beach party'],['glitch','👾','Glitch'],['calm','☀','Calm',1]];
+const g=document.getElementById('g'),st=document.getElementById('st'),tp=document.getElementById('tp'),ti=document.getElementById('ti');
+function setTopic(t){topic=t.trim()||DEF;tp.textContent=topic;ti.value=topic;try{localStorage.setItem('tl_topic',topic)}catch(e){}}
+setTopic(topic);
+ti.addEventListener('change',()=>setTopic(ti.value));
+for(const [k,i,l,w] of EV){const b=document.createElement('button');b.dataset.c=k;if(w)b.className='wide';
+  b.innerHTML='<span class="i">'+i+'</span>'+l;g.appendChild(b)}
+async function send(c,b){
+  st.textContent='sending '+c+'…';
+  try{
+    const r=await fetch('https://ntfy.sh/'+encodeURIComponent(topic),{method:'POST',body:c});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    st.textContent='sent: '+c;flash(b,'ok');
+    if(navigator.vibrate)navigator.vibrate(20);
+  }catch(e){st.textContent='failed: '+e.message;flash(b,'bad')}
+}
+function flash(b,c){if(!b)return;b.classList.add(c);setTimeout(()=>b.classList.remove(c),600)}
+document.addEventListener('click',e=>{const b=e.target.closest('button[data-c]');if(b)send(b.dataset.c,b)});
+</script>
+</body></html>
